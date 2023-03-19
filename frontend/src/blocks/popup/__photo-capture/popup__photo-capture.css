@@ -1,0 +1,13 @@
+.popup__photo-capture {
+    margin: 0;
+    margin-top: 10px;
+    font-family: "Inter";
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+    color: #ffffff;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }

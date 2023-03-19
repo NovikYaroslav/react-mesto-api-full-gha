@@ -1,0 +1,15 @@
+.forms-fieldset__error {
+    height: 28px;
+    margin: 5px 0 0 0;
+    color: #ff0000;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 12px;
+    line-height: 15px;
+  }
+  
+  .forms__error:last-of-type {
+    margin-bottom: 0;
+  }
+
+

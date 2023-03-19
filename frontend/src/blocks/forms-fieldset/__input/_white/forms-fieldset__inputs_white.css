@@ -1,0 +1,14 @@
+.forms-fieldset__input_white {
+    color: white;
+}
+
+.forms-fieldset__input_white:-webkit-autofill,
+
+.forms-fieldset__input_white:-webkit-autofill:hover,
+
+.forms-fieldset__input_white:-webkit-autofill:focus,
+
+.forms-fieldset__input_white:-webkit-autofill:active {
+    transition: background-color 5000s ease-in-out 0s;
+    -webkit-text-fill-color: #ffffff;
+}

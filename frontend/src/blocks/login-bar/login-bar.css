@@ -1,0 +1,4 @@
+.login-bar {
+    display: flex;
+    gap: 24px;
+}

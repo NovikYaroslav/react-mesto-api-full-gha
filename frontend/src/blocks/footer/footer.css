@@ -1,0 +1,21 @@
+.footer {
+    display: flex;
+    /* На будущее. Для вставки навигации и т.п. */
+    margin-top: 67px;
+    margin-bottom: 60px;
+  }
+
+  @media screen and (max-width: 900px) {
+    .footer {
+      padding-left: 19px;
+      padding-right: 19px;
+    }
+  }
+  
+  @media screen and (max-width: 600px) {
+    .footer {
+      margin-top: 48px;
+      margin-bottom: 36px;
+    }
+  }
+  
