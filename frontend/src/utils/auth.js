@@ -1,22 +1,20 @@
-import { BASE_URL } from "./data";
+import { BASE_URL } from './data';
 
 class Auth {
   _checkServerResponse(response) {
     if (response.ok) {
       return response.json();
     } else {
-      return Promise.reject(
-        `Ошибка: ${response.status} ${response.statusText}`
-      );
+      return Promise.reject(`Ошибка: ${response.status} ${response.statusText}`);
     }
   }
 
   register(email, password) {
     return fetch(`${BASE_URL}/signup`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ password, email }),
     }).then(this._checkServerResponse);
@@ -24,27 +22,27 @@ class Auth {
 
   authorize(email, password) {
     return fetch(`${BASE_URL}/signin`, {
-      method: "POST",
+      method: 'POST',
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
       },
       body: JSON.stringify({ email, password }),
     })
       .then(this._checkServerResponse)
       .then((data) => {
-        if (data.token) {
-          localStorage.setItem("jwt", data.token);
+        if (data.jwt) {
+          localStorage.setItem('jwt', data.jwt);
         }
       });
   }
 
   checkToken(jwt) {
     return fetch(`${BASE_URL}/users/me`, {
-      method: "GET",
+      method: 'GET',
       headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
+        Accept: 'application/json',
+        'Content-Type': 'application/json',
         Authorization: `Bearer ${jwt}`,
       },
     }).then(this._checkServerResponse);

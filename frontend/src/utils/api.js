@@ -1,9 +1,8 @@
-import { apiconfig } from "./data";
-
 class Api {
-  constructor({ url, teamId, headers }) {
+  constructor({ url, teamId, headers }, jwt) {
     this._url = url;
     this._headers = headers;
+    this._headers.authorization = `Bearer ${jwt}`;
     this._teamId = teamId;
   }
 
@@ -11,22 +10,21 @@ class Api {
     if (response.ok) {
       return response.json();
     } else {
-      return Promise.reject(
-        `Ошибка: ${response.status} ${response.statusText}`
-      );
+      return Promise.reject(`Ошибка: ${response.status} ${response.statusText}`);
     }
   }
 
   getCards() {
-    return fetch(`${this._url}/v1/${this._teamId}/cards`, {
+    return fetch(`${this._url}/cards`, {
       headers: this._headers,
-      method: "GET",
+      method: 'GET',
     }).then(this._checkServerResponse);
   }
+
   addCards(newCardData) {
-    return fetch(`${this._url}/v1/${this._teamId}/cards`, {
+    return fetch(`${this._url}/cards`, {
       headers: this._headers,
-      method: "POST",
+      method: 'POST',
       body: JSON.stringify({
         name: `${newCardData.name}`,
         link: `${newCardData.link}`,
@@ -35,15 +33,15 @@ class Api {
   }
 
   getUserInfoFromServer() {
-    return fetch(`${this._url}/v1/${this._teamId}/users/me`, {
+    return fetch(`${this._url}/users/me`, {
       headers: this._headers,
-      method: "GET",
+      method: 'GET',
     }).then(this._checkServerResponse);
   }
 
   editUserInfo(profileData) {
-    return fetch(`${this._url}/v1/${this._teamId}/users/me`, {
-      method: "PATCH",
+    return fetch(`${this._url}/users/me`, {
+      method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
         name: `${profileData.name}`,
@@ -53,8 +51,8 @@ class Api {
   }
 
   editUserAvatar(avatarData) {
-    return fetch(`${this._url}/v1/${this._teamId}/users/me/avatar`, {
-      method: "PATCH",
+    return fetch(`${this._url}/users/me/avatar`, {
+      method: 'PATCH',
       headers: this._headers,
       body: JSON.stringify({
         avatar: `${avatarData.avatar}`,
@@ -64,26 +62,24 @@ class Api {
 
   changeCardLikeStatus(cardId, isLiked) {
     if (isLiked) {
-      return fetch(`${this._url}/v1/${this._teamId}/cards/${cardId}/likes`, {
-        method: "PUT",
+      return fetch(`${this._url}/cards/${cardId}/likes`, {
+        method: 'PUT',
         headers: this._headers,
       }).then(this._checkServerResponse);
     } else {
-      return fetch(`${this._url}/v1/${this._teamId}/cards/${cardId}/likes`, {
+      return fetch(`${this._url}/cards/${cardId}/likes`, {
         headers: this._headers,
-        method: "DELETE",
+        method: 'DELETE',
       }).then(this._checkServerResponse);
     }
   }
 
   deleteCard(cardId) {
-    return fetch(`${this._url}/v1/${this._teamId}/cards/${cardId}`, {
+    return fetch(`${this._url}/cards/${cardId}`, {
       headers: this._headers,
-      method: "DELETE",
+      method: 'DELETE',
     }).then(this._checkServerResponse);
   }
 }
 
-const yandexApi = new Api(apiconfig);
-
-export default yandexApi;
+export default Api;

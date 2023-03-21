@@ -1,23 +1,23 @@
-import { useState, useEffect } from "react";
-import { Route, Routes, Navigate, useNavigate } from "react-router-dom";
-import "./../index";
-import ProtectedRouteElement from "./ProtectedRoute";
-import Header from "./Header";
-import Register from "./Register";
-import Login from "./Login";
-import Main from "./Main";
-import Footer from "./Footer";
-import PopupWithForm from "./PopupWithForm";
-import EditProfilePopup from "./EditProfilePopup";
-import EditAvatarProfile from "./EditAvatarProfile";
-import AddPlacePopup from "./AddPlacePopup";
-import ImagePopup from "./ImagePopup";
-import ConfirmationPopup from "./ConfirmationPopup";
-import InfoTooltip from "./InfoTooltip";
-import yandexApi from "../utils/api";
-import authApi from "../utils/auth";
-import { CurrentUserContext } from "../contexts/CurrentUserContext";
-
+import { useState, useEffect } from 'react';
+import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
+import './../index';
+import ProtectedRouteElement from './ProtectedRoute';
+import Header from './Header';
+import Register from './Register';
+import Login from './Login';
+import Main from './Main';
+import Footer from './Footer';
+import PopupWithForm from './PopupWithForm';
+import EditProfilePopup from './EditProfilePopup';
+import EditAvatarProfile from './EditAvatarProfile';
+import AddPlacePopup from './AddPlacePopup';
+import ImagePopup from './ImagePopup';
+import ConfirmationPopup from './ConfirmationPopup';
+import InfoTooltip from './InfoTooltip';
+import Api from '../utils/api';
+import authApi from '../utils/auth';
+import { apiconfig } from '../utils/data';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -30,35 +30,40 @@ function App() {
   const [isRegistrationSucced, setIsRegistrationSucced] = useState();
   const [selectedCard, setSelectedCard] = useState({});
   const [cardToDelete, setCardToDelete] = useState({});
-  const [avatarUpdateMessage, setAvatarUpdateMessage] = useState("Сохранить");
-  const [profileUpdateMessage, setProfileUpdateMessage] = useState("Сохранить");
-  const [placeAddMessage, setPlaceAddMessage] = useState("Создать");
+  const [avatarUpdateMessage, setAvatarUpdateMessage] = useState('Сохранить');
+  const [profileUpdateMessage, setProfileUpdateMessage] = useState('Сохранить');
+  const [placeAddMessage, setPlaceAddMessage] = useState('Создать');
   const [currentUser, setCurrentUser] = useState({});
-  const [userEmail, setUserEmail] = useState("");
+  const [userEmail, setUserEmail] = useState('');
   const [cards, setCards] = useState([]);
+  const [jwt, setJwt] = useState('');
   const navigate = useNavigate();
+  const yandexApi = new Api(apiconfig, jwt);
 
   useEffect(() => {
-    Promise.all([yandexApi.getUserInfoFromServer(), yandexApi.getCards()])
-      .then(([userData, initialCards]) => {
-        setCurrentUser(userData);
-        setCards(initialCards);
-      })
-      .catch((error) => console.log(error));
-  }, []);
+    if (jwt) {
+      Promise.all([yandexApi.getUserInfoFromServer(), yandexApi.getCards()])
+        .then(([userData, initialCards]) => {
+          setCurrentUser(userData);
+          setCards(initialCards);
+        })
+        .catch((error) => console.log(error));
+    }
+  }, [loggedIn, jwt]);
 
   useEffect(() => {
     tokenCheck();
-  },[]);
+  }, []);
 
   function tokenCheck() {
-    const jwt = localStorage.getItem("jwt");
+    const jwt = localStorage.getItem('jwt');
     if (jwt) {
+      setJwt(jwt);
       authApi.checkToken(jwt).then((res) => {
         if (res) {
           setLoggedIn(true);
-          setUserEmail(`${res.data.email}`);
-          navigate("/", { replace: true });
+          setUserEmail(`${res.email}`);
+          navigate('/', { replace: true });
         }
       });
     }
@@ -70,7 +75,7 @@ function App() {
       .then(() => {
         setIsRegistrationSucced(true);
         setIsInfoTooltipOpen(true);
-        navigate("/sign-in", { replace: true });
+        navigate('/signin', { replace: true });
       })
       .catch((error) => {
         setIsRegistrationSucced(false);
@@ -83,9 +88,13 @@ function App() {
     authApi
       .authorize(email, password)
       .then(() => {
-        setLoggedIn(true);
-        setUserEmail(email);
-        navigate("/", { replace: true });
+        const jwt = localStorage.getItem('jwt');
+        if (jwt) {
+          setJwt(jwt);
+          setLoggedIn(true);
+          setUserEmail(email);
+          navigate('/', { replace: true });
+        }
       })
       .catch((error) => {
         console.log(error);
@@ -94,14 +103,14 @@ function App() {
 
   function handleLogout() {
     if (loggedIn) {
-      localStorage.removeItem("jwt");
+      localStorage.removeItem('jwt');
       setLoggedIn(false);
-      navigate("/sign-up", { replace: true });
+      navigate('/signup', { replace: true });
     }
-    if (window.location.pathname === "/sign-in") {
-      navigate("/sign-up", { replace: true });
+    if (window.location.pathname === '/signin') {
+      navigate('/signup', { replace: true });
     } else {
-      navigate("/sign-in", { replace: true });
+      navigate('/signin', { replace: true });
     }
   }
 
@@ -123,23 +132,21 @@ function App() {
     setIsAddPlacePopupOpen(false);
     setisConformationPopupOpen(false);
     setIsInfoTooltipOpen(false);
-    setIsImagePopupOpen(false)
+    setIsImagePopupOpen(false);
   }
 
   function handleCardClick(openedCard) {
     setSelectedCard(openedCard);
-    setIsImagePopupOpen(true)
+    setIsImagePopupOpen(true);
   }
 
   function handleCardLike(card) {
-    const isLiked = card.likes.some((i) => i._id === currentUser._id);
+    const isLiked = card.likes.some((likeOwner) => likeOwner === currentUser._id);
 
     yandexApi
       .changeCardLikeStatus(card._id, !isLiked)
       .then((newCard) => {
-        setCards((cards) =>
-          cards.map((c) => (c._id === card._id ? newCard : c))
-        );
+        setCards((cards) => cards.map((c) => (c._id === card._id ? newCard : c)));
       })
       .catch((error) => console.log(error));
   }
@@ -160,7 +167,7 @@ function App() {
   }
 
   function handleUpdateUser(profilePopupInputsData) {
-    setProfileUpdateMessage("Сохранение...");
+    setProfileUpdateMessage('Сохранение...');
     yandexApi
       .editUserInfo(profilePopupInputsData)
       .then(() => {
@@ -173,12 +180,12 @@ function App() {
       })
       .catch((error) => console.log(error))
       .finally(() => {
-        setProfileUpdateMessage("Сохранить");
+        setProfileUpdateMessage('Сохранить');
       });
   }
 
   function handleAddPlaceSubmit(addedCard) {
-    setPlaceAddMessage("Создаю...");
+    setPlaceAddMessage('Создаю...');
     yandexApi
       .addCards(addedCard)
       .then((newCard) => {
@@ -187,12 +194,12 @@ function App() {
       })
       .catch((error) => console.log(error))
       .finally(() => {
-        setPlaceAddMessage("Создать");
+        setPlaceAddMessage('Создать');
       });
   }
 
   function handleUpdateAvatar(avatarPopupInputsData) {
-    setAvatarUpdateMessage("Сохранение...");
+    setAvatarUpdateMessage('Сохранение...');
     yandexApi
       .editUserAvatar(avatarPopupInputsData)
       .then(() => {
@@ -204,31 +211,21 @@ function App() {
       })
       .catch((error) => console.log(error))
       .finally(() => {
-        setAvatarUpdateMessage("Сохранить");
+        setAvatarUpdateMessage('Сохранить');
       });
   }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
-      <div className="page">
-        <Header
-          loggedIn={loggedIn}
-          userEmail={userEmail}
-          handleLogout={handleLogout}
-        />
+      <div className='page'>
+        <Header loggedIn={loggedIn} userEmail={userEmail} handleLogout={handleLogout} />
         <Routes>
           <Route
-            path="*"
-            element={
-              loggedIn ? (
-                <Navigate to="/main" replace />
-              ) : (
-                <Navigate to="/sign-in" replace />
-              )
-            }
+            path='*'
+            element={loggedIn ? <Navigate to='/main' replace /> : <Navigate to='/signin' replace />}
           />
           <Route
-            path="/"
+            path='/'
             element={
               <ProtectedRouteElement
                 element={Main}
@@ -243,14 +240,8 @@ function App() {
               />
             }
           />
-          <Route
-            path="/sign-up"
-            element={<Register onRegister={handleRegistration} />}
-          />
-          <Route
-            path="/sign-in"
-            element={<Login onAuthoriz={handleAuthorization} />}
-          />
+          <Route path='/signup' element={<Register onRegister={handleRegistration} />} />
+          <Route path='/signin' element={<Login onAuthoriz={handleAuthorization} />} />
         </Routes>
         <Footer />
         <EditProfilePopup
@@ -271,11 +262,7 @@ function App() {
           onUpdateAvatar={handleUpdateAvatar}
           message={avatarUpdateMessage}
         />
-        <PopupWithForm
-          title="Вы уверены?"
-          name="conformation"
-          buttonText="Да"
-        />
+        <PopupWithForm title='Вы уверены?' name='conformation' buttonText='Да' />
         <ImagePopup card={selectedCard} isOpen={isImagePopupOpen} onClose={closeAllPopups} />
         <ConfirmationPopup
           isOpen={isConformationPopupOpen}

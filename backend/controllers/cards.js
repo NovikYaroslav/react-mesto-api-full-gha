@@ -6,7 +6,7 @@ const NotFoundError = require('../utils/errors/NotFoundError');
 module.exports.getCards = (req, res, next) => {
   card
     .find({})
-    .then((cards) => res.send({ data: cards }))
+    .then((cards) => res.send(cards))
     .catch(next);
 };
 
@@ -14,7 +14,7 @@ module.exports.createCard = (req, res, next) => {
   const { name, link } = req.body;
   card
     .create({ name, link, owner: req.user._id })
-    .then((newCard) => res.send({ data: newCard }))
+    .then((newCard) => res.send(newCard))
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(
@@ -56,7 +56,7 @@ module.exports.likeCard = (req, res, next) => {
       { new: true },
     )
     .orFail(() => next(new NotFoundError('Карточка с таким id не найдена')))
-    .then((targetCard) => res.send({ data: targetCard }))
+    .then((targetCard) => res.send(targetCard))
     .catch(next);
 };
 
@@ -68,6 +68,6 @@ module.exports.dislikeCard = (req, res, next) => {
       { new: true },
     )
     .orFail(() => next(new NotFoundError('Карточка с таким id не найдена')))
-    .then((targetCard) => res.send({ data: targetCard }))
+    .then((targetCard) => res.send(targetCard))
     .catch(next);
 };
