@@ -10,7 +10,7 @@
 
 ## Ссылки на проект
 
-IP-адрес 158.160.40.88
+IP 158.160.40.88
 
 Frontend https://mesto.novik.nomoredomains.work
 
