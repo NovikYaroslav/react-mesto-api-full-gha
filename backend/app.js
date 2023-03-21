@@ -27,7 +27,14 @@ app.listen(PORT);
 app.use(express.json());
 app.use(helmet());
 app.use(limiter);
-app.use(cors({ origin: 'https://mesto.novik.nomoredomains.work' }));
+app.use(
+  cors({
+    origin: [
+      'https://mesto.novik.nomoredomains.work',
+      'http://mesto.novik.nomoredomains.work',
+    ],
+  }),
+);
 app.use(requestLogger);
 app.get('/crash-test', () => {
   setTimeout(() => {
@@ -38,4 +45,3 @@ app.use(router);
 app.use(errorLogger);
 app.use(errors());
 app.use(errorHandler);
-// test
