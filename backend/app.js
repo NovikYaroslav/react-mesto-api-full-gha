@@ -27,7 +27,7 @@ app.listen(PORT);
 app.use(express.json());
 app.use(helmet());
 app.use(limiter);
-app.use(cors({ origin: 'http://localhost:3001' }));
+app.use(cors({ origin: 'http://mesto.novik.nomoredomains.work' }));
 app.use(requestLogger);
 app.get('/crash-test', () => {
   setTimeout(() => {
