@@ -13,8 +13,6 @@ const { PORT = 3000 } = process.env;
 const allowedCors = [
   'https://mesto.novik.nomoredomains.work',
   'http://mesto.novik.nomoredomains.work',
-  'https://localhost:3000',
-  'http://localhost:3000',
 ];
 
 const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
@@ -31,6 +29,19 @@ mongoose.connect('mongodb://127.0.0.1/mestodb', {
   useUnifiedTopology: true,
 });
 
+app.listen(PORT);
+app.use(express.json());
+app.use(helmet());
+app.use(limiter);
+// app.use(
+//   cors({
+//     origin: [
+//       'https://mesto.novik.nomoredomains.work',
+//       'http://mesto.novik.nomoredomains.work',
+//     ],
+//   }),
+// );
+app.use(requestLogger);
 // eslint-disable-next-line consistent-return
 app.use((req, res, next) => {
   const { method } = req;
@@ -47,20 +58,6 @@ app.use((req, res, next) => {
   }
   next();
 });
-
-app.listen(PORT);
-app.use(express.json());
-app.use(helmet());
-app.use(limiter);
-// app.use(
-//   cors({
-//     origin: [
-//       'https://mesto.novik.nomoredomains.work',
-//       'http://mesto.novik.nomoredomains.work',
-//     ],
-//   }),
-// );
-app.use(requestLogger);
 app.get('/crash-test', () => {
   setTimeout(() => {
     throw new Error('Сервер сейчас упадёт');
