@@ -13,6 +13,8 @@ const { PORT = 3000 } = process.env;
 const allowedCors = [
   'https://mesto.novik.nomoredomains.work',
   'http://mesto.novik.nomoredomains.work',
+  'https://localhost:3000',
+  'http://localhost:3000',
 ];
 
 const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
