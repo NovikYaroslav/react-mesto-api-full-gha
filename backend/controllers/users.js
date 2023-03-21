@@ -1,7 +1,7 @@
 const bcrypt = require('bcrypt');
 const jsonwebtoken = require('jsonwebtoken');
 const user = require('../models/user');
-const { JWT_SECRET } = require('../utils/const');
+const { pickKey } = require('../utils/pickKey');
 const BadRequestError = require('../utils/errors/BadRequestError');
 const AuthorizationError = require('../utils/errors/AuthorizationError');
 const NotFoundError = require('../utils/errors/NotFoundError');
@@ -15,7 +15,8 @@ module.exports.login = (req, res, next) => {
     .orFail(() => next(new AuthorizationError('Пользователь не найден')))
     .then((userData) => bcrypt.compare(password, userData.password).then((matched) => {
       if (matched) {
-        const jwt = jsonwebtoken.sign({ _id: userData._id }, JWT_SECRET, {
+        const key = pickKey();
+        const jwt = jsonwebtoken.sign({ _id: userData._id }, key, {
           expiresIn: '7d',
         });
         res.send({ jwt });

@@ -1,5 +1,5 @@
 const jsonwebtoken = require('jsonwebtoken');
-const { JWT_SECRET } = require('../utils/const');
+const { pickKey } = require('../utils/pickKey');
 const AuthorizationError = require('../utils/errors/AuthorizationError');
 
 const auth = (req, res, next) => {
@@ -12,7 +12,8 @@ const auth = (req, res, next) => {
   let payload;
   const jwt = authorization.replace('Bearer ', '');
   try {
-    payload = jsonwebtoken.verify(jwt, JWT_SECRET);
+    const key = pickKey();
+    payload = jsonwebtoken.verify(jwt, key);
   } catch (err) {
     next(new AuthorizationError('Необходима авторизация'));
   }
