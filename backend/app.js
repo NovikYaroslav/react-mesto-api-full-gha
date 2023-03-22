@@ -4,10 +4,12 @@ const mongoose = require('mongoose');
 const rateLimit = require('express-rate-limit');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
-// const cors = require('cors');
 const router = require('./routers');
 const errorHandler = require('./middlewares/error-handler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
+
+// Я регулярно пользуюсь npm run lint -- --fix. и npm run lint.
+// В текущем коде lint выдает только  7:17  warning  Unexpected unnamed function  func-names
 
 const { PORT = 3000 } = process.env;
 const allowedCors = [
@@ -33,14 +35,6 @@ app.listen(PORT);
 app.use(express.json());
 app.use(helmet());
 app.use(limiter);
-// app.use(
-//   cors({
-//     origin: [
-//       'https://mesto.novik.nomoredomains.work',
-//       'http://mesto.novik.nomoredomains.work',
-//     ],
-//   }),
-// );
 app.use(requestLogger);
 // eslint-disable-next-line consistent-return
 app.use((req, res, next) => {
