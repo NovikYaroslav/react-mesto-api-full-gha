@@ -28,7 +28,7 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
         <button
           className='element__delete-button'
           type='button'
-          aria-label='Кнопка удаления карточки'
+          aria-label='Card delete button'
           onClick={handleDeleteClick}></button>
       )}
       <img className='element__photo' src={card.link} alt={card.name} onClick={handleClick} />
@@ -38,7 +38,7 @@ function Card({ card, onCardClick, onCardLike, onCardDelete }) {
           <button
             className={cardLikeButtonClassName}
             type='button'
-            aria-label='Кнопка лайка карточки'
+            aria-label='Card like button'
             onClick={handleLike}></button>
           <p className='element__like-counter'>{card.likes.length}</p>
         </div>

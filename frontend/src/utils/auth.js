@@ -5,7 +5,11 @@ class Auth {
     if (response.ok) {
       return response.json();
     } else {
-      return Promise.reject(`Ошибка: ${response.status} ${response.statusText}`);
+      return Promise.reject().then((error) => throw new Error(error.message || `${response.status} ${response.statusText}`););
+// нужно чтобы возвращался текст ошибки
+          return response.json().then((error) => {
+      throw new Error(error.message || `${response.status} ${response.statusText}`);
+    });
     }
   }
 

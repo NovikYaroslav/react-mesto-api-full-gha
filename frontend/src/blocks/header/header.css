@@ -8,7 +8,7 @@
   box-sizing: border-box;
 }
 
-@media screen and (max-width: 405px) {
+@media (max-width: 405px) {
   .header {
     height: 56px;
     margin-top: 28px;

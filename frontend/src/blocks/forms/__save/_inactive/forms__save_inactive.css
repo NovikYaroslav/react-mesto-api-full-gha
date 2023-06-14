@@ -6,7 +6,7 @@
   background: none;
   border: 1px solid #000000;
   border-radius: 2px;
-  font-family: "Inter", "Arial", sans-serif;
+  font-family: 'Inter', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 18px;
@@ -21,13 +21,15 @@
   opacity: 0.2;
 }
 
-@media screen and (max-width: 600px) {
+@media (max-width: 575px) {
   .forms__save_inactive {
-    width: 238px;
-    height: 46px;
     margin-top: 45px;
-    margin-bottom: 25px;
-    font-size: 14px;
-    line-height: 17px;
+  }
+}
+
+@media (max-width: 390px) {
+  .forms__save_inactive {
+    width: 258px;
+    align-self: center;
   }
 }

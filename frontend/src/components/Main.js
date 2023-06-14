@@ -35,7 +35,7 @@ function Main({
           <button
             className='profile__avatar-edit-button'
             type='button'
-            aria-label='Кнопка редатирования аватара'
+            aria-label='Edit avatar button'
             onClick={onEditAvatar}></button>
         </div>
         <div className='profile__info'>
@@ -43,14 +43,14 @@ function Main({
           <button
             className='profile__edit-button'
             type='button'
-            aria-label='Кнопка настройки профиля'
+            aria-label='Edit profile button'
             onClick={onEditProfile}></button>
           <h2 className='profile__discription'>{currentUser.about}</h2>
         </div>
         <button
           className='profile__add-button'
           type='button'
-          aria-label='Кнопка добавления карточки'
+          aria-label='Add card button'
           onClick={onAddPlace}></button>
       </section>
       <section className='elements'>{cardElement}</section>

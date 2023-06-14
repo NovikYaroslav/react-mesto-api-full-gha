@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { Route, Routes, Navigate, useNavigate } from 'react-router-dom';
+import { CurrentUserContext } from '../contexts/CurrentUserContext';
+import { toast } from 'react-toastify';
 import './../index';
 import ProtectedRouteElement from './ProtectedRoute';
 import Header from './Header';
@@ -17,7 +19,6 @@ import InfoTooltip from './InfoTooltip';
 import Api from '../utils/api';
 import authApi from '../utils/auth';
 import { apiconfig } from '../utils/data';
-import { CurrentUserContext } from '../contexts/CurrentUserContext';
 
 function App() {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -30,9 +31,9 @@ function App() {
   const [isRegistrationSucced, setIsRegistrationSucced] = useState();
   const [selectedCard, setSelectedCard] = useState({});
   const [cardToDelete, setCardToDelete] = useState({});
-  const [avatarUpdateMessage, setAvatarUpdateMessage] = useState('Сохранить');
-  const [profileUpdateMessage, setProfileUpdateMessage] = useState('Сохранить');
-  const [placeAddMessage, setPlaceAddMessage] = useState('Создать');
+  const [avatarUpdateMessage, setAvatarUpdateMessage] = useState('Save');
+  const [profileUpdateMessage, setProfileUpdateMessage] = useState('Save');
+  const [placeAddMessage, setPlaceAddMessage] = useState('Create');
   const [currentUser, setCurrentUser] = useState({});
   const [userEmail, setUserEmail] = useState('');
   const [cards, setCards] = useState([]);
@@ -98,6 +99,10 @@ function App() {
       })
       .catch((error) => {
         console.log(error);
+        toast.error(error, {
+          position: toast.POSITION.TOP_CENTER,
+          toastId: 2,
+        });
       });
   }
 
@@ -167,7 +172,7 @@ function App() {
   }
 
   function handleUpdateUser(profilePopupInputsData) {
-    setProfileUpdateMessage('Сохранение...');
+    setProfileUpdateMessage('Saving...');
     yandexApi
       .editUserInfo(profilePopupInputsData)
       .then(() => {
@@ -180,12 +185,12 @@ function App() {
       })
       .catch((error) => console.log(error))
       .finally(() => {
-        setProfileUpdateMessage('Сохранить');
+        setProfileUpdateMessage('Save');
       });
   }
 
   function handleAddPlaceSubmit(addedCard) {
-    setPlaceAddMessage('Создаю...');
+    setPlaceAddMessage('Creating...');
     yandexApi
       .addCards(addedCard)
       .then((newCard) => {
@@ -194,12 +199,12 @@ function App() {
       })
       .catch((error) => console.log(error))
       .finally(() => {
-        setPlaceAddMessage('Создать');
+        setPlaceAddMessage('Create');
       });
   }
 
   function handleUpdateAvatar(avatarPopupInputsData) {
-    setAvatarUpdateMessage('Сохранение...');
+    setAvatarUpdateMessage('Saving...');
     yandexApi
       .editUserAvatar(avatarPopupInputsData)
       .then(() => {
@@ -211,7 +216,7 @@ function App() {
       })
       .catch((error) => console.log(error))
       .finally(() => {
-        setAvatarUpdateMessage('Сохранить');
+        setAvatarUpdateMessage('Save');
       });
   }
 
@@ -262,7 +267,7 @@ function App() {
           onUpdateAvatar={handleUpdateAvatar}
           message={avatarUpdateMessage}
         />
-        <PopupWithForm title='Вы уверены?' name='conformation' buttonText='Да' />
+        <PopupWithForm title='You sure?' name='conformation' buttonText='Yes' />
         <ImagePopup card={selectedCard} isOpen={isImagePopupOpen} onClose={closeAllPopups} />
         <ConfirmationPopup
           isOpen={isConformationPopupOpen}

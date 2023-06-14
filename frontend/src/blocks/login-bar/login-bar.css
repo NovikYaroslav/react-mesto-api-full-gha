@@ -1,4 +1,10 @@
 .login-bar {
-    display: flex;
-    gap: 24px;
+  display: flex;
+  gap: 24px;
+}
+
+@media (max-width: 900px) {
+  .login-bar {
+    padding-right: 27px;
+  }
 }

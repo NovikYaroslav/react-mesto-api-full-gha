@@ -1,8 +1,8 @@
-import { useRef, useEffect } from "react";
-import PopupWithForm from "./PopupWithForm";
-import useFormWithValidation from "../utils/formValidator";
-import Form from "./Form";
-import Input from "./Input";
+import { useRef, useEffect } from 'react';
+import PopupWithForm from './PopupWithForm';
+import useFormWithValidation from '../utils/formValidator';
+import Form from './Form';
+import Input from './Input';
 
 function EditAvatarProfile({ isOpen, onClose, onUpdateAvatar, message }) {
   const avatarRef = useRef();
@@ -20,23 +20,17 @@ function EditAvatarProfile({ isOpen, onClose, onUpdateAvatar, message }) {
   }, [isOpen]);
 
   return (
-    <PopupWithForm
-      title="Обновить аватар"
-      name="avatar"
-      isOpen={isOpen}
-      onClose={onClose}
-    >
+    <PopupWithForm title='Update avatar' name='avatar' isOpen={isOpen} onClose={onClose}>
       <Form
-        name="avatar"
+        name='avatar'
         onSubmit={handleSubmit}
         isValid={formValidator.isValid}
         buttonText={message}
-        formValidator={formValidator}
-      >
+        formValidator={formValidator}>
         <Input
-          type={"url"}
-          name={"avatarLink"}
-          placeholder={"Ссылка на аватар"}
+          type={'url'}
+          name={'avatarLink'}
+          placeholder={'Link to avatar'}
           Ref={avatarRef}
           formValidator={formValidator}
         />

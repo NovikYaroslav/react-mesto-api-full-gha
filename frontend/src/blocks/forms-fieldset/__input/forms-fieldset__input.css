@@ -7,7 +7,7 @@
   box-sizing: border-box;
   border-bottom: 1px solid #cccccc;
   background-color: rgba(0, 0, 0, 0);
-  font-family: "Inter", "Arial", sans-serif;
+  font-family: 'Inter', 'Arial', sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 14px;
@@ -21,4 +21,11 @@
 .forms-fieldset__input:-webkit-autofill:active {
   transition: background-color 5000s ease-in-out 0s;
   -webkit-text-fill-color: #000000;
+}
+
+@media (max-width: 390px) {
+  .forms-fieldset__input {
+    width: 258px;
+    align-self: center;
+  }
 }
