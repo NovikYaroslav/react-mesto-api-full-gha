@@ -6,7 +6,7 @@ const auth = (req, res, next) => {
   const { authorization } = req.headers;
 
   if (!authorization || !authorization.startsWith('Bearer')) {
-    next(new AuthorizationError('Необходима авторизация'));
+    next(new AuthorizationError('Authorization required'));
   }
 
   let payload;
@@ -16,7 +16,7 @@ const auth = (req, res, next) => {
     console.log(key);
     payload = jsonwebtoken.verify(jwt, key);
   } catch (err) {
-    next(new AuthorizationError('Необходима авторизация'));
+    next(new AuthorizationError('Authorization required'));
   }
 
   req.user = payload;

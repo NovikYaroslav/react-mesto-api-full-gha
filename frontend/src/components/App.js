@@ -48,7 +48,12 @@ function App() {
           setCurrentUser(userData);
           setCards(initialCards);
         })
-        .catch((error) => console.log(error));
+        .catch((error) =>
+          toast.error(error.message, {
+            position: toast.POSITION.TOP_CENTER,
+            toastId: 2,
+          }),
+        );
     }
   }, [loggedIn, jwt]);
 
@@ -81,7 +86,10 @@ function App() {
       .catch((error) => {
         setIsRegistrationSucced(false);
         setIsInfoTooltipOpen(true);
-        console.log(error);
+        toast.error(error.message, {
+          position: toast.POSITION.TOP_CENTER,
+          toastId: 2,
+        });
       });
   }
 
@@ -98,8 +106,7 @@ function App() {
         }
       })
       .catch((error) => {
-        console.log(error);
-        toast.error(error, {
+        toast.error(error.message, {
           position: toast.POSITION.TOP_CENTER,
           toastId: 2,
         });
@@ -153,7 +160,12 @@ function App() {
       .then((newCard) => {
         setCards((cards) => cards.map((c) => (c._id === card._id ? newCard : c)));
       })
-      .catch((error) => console.log(error));
+      .catch((error) =>
+        toast.error(error.message, {
+          position: toast.POSITION.TOP_CENTER,
+          toastId: 2,
+        }),
+      );
   }
 
   function handleCardDeleteConfirmation(card) {
@@ -163,7 +175,12 @@ function App() {
         closeAllPopups();
         setCards((cards) => cards.filter((c) => c._id !== card._id));
       })
-      .catch((error) => console.log(error));
+      .catch((error) =>
+        toast.error(error.message, {
+          position: toast.POSITION.TOP_CENTER,
+          toastId: 2,
+        }),
+      );
   }
 
   function handleCardDelete(cardToDelete) {
@@ -183,7 +200,12 @@ function App() {
         });
         closeAllPopups();
       })
-      .catch((error) => console.log(error))
+      .catch((error) =>
+        toast.error(error.message, {
+          position: toast.POSITION.TOP_CENTER,
+          toastId: 2,
+        }),
+      )
       .finally(() => {
         setProfileUpdateMessage('Save');
       });
@@ -197,7 +219,12 @@ function App() {
         setCards([newCard, ...cards]);
         closeAllPopups();
       })
-      .catch((error) => console.log(error))
+      .catch((error) =>
+        toast.error(error.message, {
+          position: toast.POSITION.TOP_CENTER,
+          toastId: 2,
+        }),
+      )
       .finally(() => {
         setPlaceAddMessage('Create');
       });
@@ -214,7 +241,12 @@ function App() {
         });
         closeAllPopups();
       })
-      .catch((error) => console.log(error))
+      .catch((error) =>
+        toast.error(error.message, {
+          position: toast.POSITION.TOP_CENTER,
+          toastId: 2,
+        }),
+      )
       .finally(() => {
         setAvatarUpdateMessage('Save');
       });

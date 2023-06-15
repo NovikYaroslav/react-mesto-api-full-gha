@@ -18,9 +18,7 @@ module.exports.createCard = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(
-          new BadRequestError(
-            'Переданы некорректные данные в методы создания карточки',
-          ),
+          new BadRequestError('Incorrect data passed to card creation methods'),
         );
       } else {
         next(err);
@@ -31,18 +29,14 @@ module.exports.createCard = (req, res, next) => {
 module.exports.deleteCard = (req, res, next) => {
   card
     .findById(req.params.cardId)
-    .orFail(() => next(new NotFoundError('Карточка с таким id не найдена')))
+    .orFail(() => next(new NotFoundError('Card with this id was not found')))
     .then((cardToDelete) => {
       if (req.user._id === cardToDelete.owner.toString()) {
         card.findByIdAndRemove(req.params.cardId).then(() => {
-          res.send({ message: 'Карточка удалена' });
+          res.send({ message: 'Card deleted' });
         });
       } else {
-        next(
-          new PermissionError(
-            'Невозможно удалить карточку другого пользователя',
-          ),
-        );
+        next(new PermissionError('Unable to delete another users card'));
       }
     })
     .catch(next);
@@ -55,7 +49,7 @@ module.exports.likeCard = (req, res, next) => {
       { $addToSet: { likes: req.user._id } },
       { new: true },
     )
-    .orFail(() => next(new NotFoundError('Карточка с таким id не найдена')))
+    .orFail(() => next(new NotFoundError('Card with this id was not found')))
     .then((targetCard) => res.send(targetCard))
     .catch(next);
 };
@@ -67,7 +61,7 @@ module.exports.dislikeCard = (req, res, next) => {
       { $pull: { likes: req.user._id } },
       { new: true },
     )
-    .orFail(() => next(new NotFoundError('Карточка с таким id не найдена')))
+    .orFail(() => next(new NotFoundError('Card with this id was not found')))
     .then((targetCard) => res.send(targetCard))
     .catch(next);
 };

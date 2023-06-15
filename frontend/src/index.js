@@ -12,7 +12,7 @@ root.render(
   <React.StrictMode>
     <BrowserRouter>
       <App />
-      <ToastContainer toastStyle={{ backgroundColor: '#180404', color: '#d3c163' }} />
+      <ToastContainer toastStyle={{ backgroundColor: '#ffffff', color: '#000000' }} />
     </BrowserRouter>
   </React.StrictMode>,
 );

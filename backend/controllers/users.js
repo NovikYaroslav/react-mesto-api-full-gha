@@ -12,7 +12,7 @@ module.exports.login = (req, res, next) => {
   user
     .findOne({ email })
     .select('+password')
-    .orFail(() => next(new AuthorizationError('Пользователь не найден')))
+    .orFail(() => next(new AuthorizationError('User is not found')))
     .then((userData) => bcrypt.compare(password, userData.password).then((matched) => {
       if (matched) {
         const key = pickKey();
@@ -22,7 +22,7 @@ module.exports.login = (req, res, next) => {
         res.send({ jwt });
         return;
       }
-      next(new AuthorizationError('Пользователь не найден'));
+      next(new AuthorizationError('User is not found'));
     }))
     .catch(next);
 };
@@ -35,6 +35,7 @@ module.exports.getUsers = (req, res, next) => {
 };
 
 module.exports.createUser = (req, res, next) => {
+  console.log(req.body);
   const {
     name, about, avatar, email, password,
   } = req.body;
@@ -56,13 +57,11 @@ module.exports.createUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(
-          new BadRequestError(
-            'Переданы некорректные данные в методы создания пользователя',
-          ),
+          new BadRequestError('Incorrect data passed to user creation methods'),
         );
       }
       if (err.code === 11000) {
-        next(new DublicationError('Пользователь с таким email уже существует'));
+        next(new DublicationError('User with this email already exists'));
       } else {
         next(err);
       }
@@ -100,9 +99,7 @@ module.exports.updateUser = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(
-          new BadRequestError(
-            'Переданы некорректные данные в методы обновления пользователя',
-          ),
+          new BadRequestError('Incorrect data passed to user update methods'),
         );
       } else {
         next(err);
@@ -121,9 +118,7 @@ module.exports.updateUserAvatar = (req, res, next) => {
     .catch((err) => {
       if (err.name === 'ValidationError') {
         next(
-          new BadRequestError(
-            'Переданы некорректные данные в методы создания пользователя',
-          ),
+          new BadRequestError('Incorrect data passed to avatar update methods'),
         );
       } else {
         next(err);

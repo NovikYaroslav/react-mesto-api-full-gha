@@ -20,7 +20,7 @@ The site consists of 3 main sections:
 
 ### Used technologies:
 
-CSS/REACT
+CSS/REACT/NODE.JS
 
 1. Flexbox
 2. Grid
@@ -31,6 +31,12 @@ CSS/REACT
 7. Registration, Authentication, Identification (JWT Token)
 8. React (useContext, useState, useEffect, useRef, useCallback)
 9. ReactRouter v.6.4.0
+10. Express
+11. MongoBD/Mongoose
+12. Express rate limit
+13. Helmet
+14. Celebrate
+15. ErrorLogger
 
 ### _What should be finished _:
 
@@ -67,6 +73,12 @@ Backend https://api.mesto.novik.nomoredomains.work
 7. Регистрация, Аутентификация, Идентификация (JWT Токен)
 8. React (useContext, useState, useEffect, useRef, useCallback)
 9. ReactRouter v.6.4.0
+10. Express
+11. MongoBD/Mongoose
+12. Express rate limit
+13. Helmet
+14. Celebrate
+15. ErrorLogger
 
 ### _Что следует доделать_:
 

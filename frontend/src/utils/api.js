@@ -10,7 +10,9 @@ class Api {
     if (response.ok) {
       return response.json();
     } else {
-      return Promise.reject(`Ошибка: ${response.status} ${response.statusText}`);
+      return response.json().then((error) => {
+        throw new Error(error.message);
+      });
     }
   }
 
