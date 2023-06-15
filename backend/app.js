@@ -13,7 +13,6 @@ const allowedCors = [
   'http://localhost:3000',
   'https://mesto.novik.nomoredomains.work',
   'http://mesto.novik.nomoredomains.work',
-  'https://api.mesto.novik.nomoredomains.work',
 ];
 
 const DEFAULT_ALLOWED_METHODS = 'GET,HEAD,PUT,PATCH,POST,DELETE';
