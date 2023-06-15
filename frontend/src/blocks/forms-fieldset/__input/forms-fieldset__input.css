@@ -22,10 +22,3 @@
   transition: background-color 5000s ease-in-out 0s;
   -webkit-text-fill-color: #000000;
 }
-
-@media (max-width: 390px) {
-  .forms-fieldset__input {
-    width: 258px;
-    align-self: center;
-  }
-}

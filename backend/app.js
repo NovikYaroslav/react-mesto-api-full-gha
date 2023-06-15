@@ -8,9 +8,8 @@ const router = require('./routers');
 const errorHandler = require('./middlewares/error-handler');
 const { requestLogger, errorLogger } = require('./middlewares/logger');
 
-const { PORT = 3001 } = process.env;
+const { PORT = 3000 } = process.env;
 const allowedCors = [
-  'http://localhost:3000',
   'https://mesto.novik.nomoredomains.work',
   'http://mesto.novik.nomoredomains.work',
 ];
